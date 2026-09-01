@@ -32,15 +32,10 @@ function formatCurrency(value: number): string {
 
 export default function CreateInvoicePage() {
   const [, setLocation] = useLocation();
-  const { data: clientsData } = trpc.clients.list.useQuery({
-    limit: 100,
-    offset: 0,
-  });
+  const { data: clientsData } = trpc.clients.list.useQuery({ limit: 100, offset: 0 });
 
   const [clientId, setClientId] = useState<string>("");
-  const [issueDate, setIssueDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
   const [dueDate, setDueDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 30);
@@ -53,8 +48,7 @@ export default function CreateInvoicePage() {
   ]);
 
   const subtotal = useMemo(
-    () =>
-      lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0),
+    () => lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0),
     [lineItems]
   );
   const vatAmount = useMemo(
@@ -75,10 +69,7 @@ export default function CreateInvoicePage() {
   });
 
   const addLineItem = () => {
-    setLineItems([
-      ...lineItems,
-      { description: "", quantity: 1, unitPrice: 0 },
-    ]);
+    setLineItems([...lineItems, { description: "", quantity: 1, unitPrice: 0 }]);
   };
 
   const removeLineItem = (index: number) => {
@@ -98,7 +89,6 @@ export default function CreateInvoicePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!clientId) {
       toast.error("Please select a client");
       return;
@@ -129,11 +119,13 @@ export default function CreateInvoicePage() {
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center gap-3">
         <Button
+          type="button"
           variant="ghost"
           size="icon"
+          aria-label="Back to invoices"
           onClick={() => setLocation("/invoices")}
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         </Button>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Create Invoice</h1>
@@ -143,17 +135,15 @@ export default function CreateInvoicePage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} aria-label="Create invoice" className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Invoice Details</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle className="text-base">Invoice Details</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Client</Label>
+                <Label htmlFor="invoice-client">Client</Label>
                 <Select value={clientId} onValueChange={setClientId}>
-                  <SelectTrigger>
+                  <SelectTrigger id="invoice-client" aria-label="Client">
                     <SelectValue placeholder="Select a client" />
                   </SelectTrigger>
                   <SelectContent>
@@ -168,137 +158,71 @@ export default function CreateInvoicePage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Issue Date</Label>
-                  <Input
-                    type="date"
-                    value={issueDate}
-                    onChange={e => setIssueDate(e.target.value)}
-                  />
+                  <Label htmlFor="issue-date">Issue Date</Label>
+                  <Input id="issue-date" type="date" value={issueDate} onChange={e => setIssueDate(e.target.value)} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Due Date</Label>
-                  <Input
-                    type="date"
-                    value={dueDate}
-                    onChange={e => setDueDate(e.target.value)}
-                  />
+                  <Label htmlFor="due-date">Due Date</Label>
+                  <Input id="due-date" type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label>VAT Rate (%)</Label>
-                <Input
-                  type="number"
-                  value={vatRate}
-                  onChange={e => setVatRate(Number(e.target.value))}
-                  min={0}
-                  max={100}
-                />
+                <Label htmlFor="vat-rate">VAT Rate (%)</Label>
+                <Input id="vat-rate" type="number" value={vatRate} onChange={e => setVatRate(Number(e.target.value))} min={0} max={100} />
               </div>
 
               <div className="space-y-2">
-                <Label>Notes</Label>
-                <Textarea
-                  value={notes}
-                  onChange={e => setNotes(e.target.value)}
-                  placeholder="Additional notes..."
-                  rows={3}
-                />
+                <Label htmlFor="invoice-notes">Notes</Label>
+                <Textarea id="invoice-notes" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Additional notes..." rows={3} />
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Summary</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-mono">{formatCurrency(subtotal)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">VAT ({vatRate}%)</span>
-                <span className="font-mono">{formatCurrency(vatAmount)}</span>
-              </div>
+            <CardHeader><CardTitle className="text-base">Summary</CardTitle></CardHeader>
+            <CardContent className="space-y-3" aria-live="polite" aria-atomic="true">
+              <div className="flex justify-between text-sm"><span className="text-muted-foreground">Subtotal</span><span className="font-mono">{formatCurrency(subtotal)}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-muted-foreground">VAT ({vatRate}%)</span><span className="font-mono">{formatCurrency(vatAmount)}</span></div>
               <Separator />
-              <div className="flex justify-between text-lg font-bold">
-                <span>Total</span>
-                <span className="font-mono">{formatCurrency(total)}</span>
-              </div>
+              <div className="flex justify-between text-lg font-bold"><span>Total</span><span className="font-mono">{formatCurrency(total)}</span></div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Line Items */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-base">Line Items</CardTitle>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={addLineItem}
-            >
-              <Plus className="h-4 w-4 mr-1.5" />
+            <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
+              <Plus className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Add Item
             </Button>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="grid grid-cols-12 gap-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                <div className="col-span-5">Description</div>
-                <div className="col-span-2">Quantity</div>
-                <div className="col-span-2">Unit Price</div>
-                <div className="col-span-2 text-right">Amount</div>
-                <div className="col-span-1" />
+              <div className="grid grid-cols-12 gap-3 text-xs font-medium text-muted-foreground uppercase tracking-wider" aria-hidden="true">
+                <div className="col-span-5">Description</div><div className="col-span-2">Quantity</div><div className="col-span-2">Unit Price</div><div className="col-span-2 text-right">Amount</div><div className="col-span-1" />
               </div>
               {lineItems.map((item, idx) => (
-                <div key={idx} className="grid grid-cols-12 gap-3 items-center">
+                <div key={idx} className="grid grid-cols-12 gap-3 items-center" aria-label={`Line item ${idx + 1}`}>
                   <div className="col-span-5">
-                    <Input
-                      placeholder="Description"
-                      value={item.description}
-                      onChange={e =>
-                        updateLineItem(idx, "description", e.target.value)
-                      }
-                    />
+                    <Label htmlFor={`line-description-${idx}`} className="sr-only">Description for line item {idx + 1}</Label>
+                    <Input id={`line-description-${idx}`} aria-label={`Description for line item ${idx + 1}`} placeholder="Description" value={item.description} onChange={e => updateLineItem(idx, "description", e.target.value)} />
                   </div>
                   <div className="col-span-2">
-                    <Input
-                      type="number"
-                      value={item.quantity}
-                      onChange={e =>
-                        updateLineItem(idx, "quantity", Number(e.target.value))
-                      }
-                      min={0}
-                      step="0.01"
-                    />
+                    <Label htmlFor={`line-quantity-${idx}`} className="sr-only">Quantity for line item {idx + 1}</Label>
+                    <Input id={`line-quantity-${idx}`} aria-label={`Quantity for line item ${idx + 1}`} type="number" value={item.quantity} onChange={e => updateLineItem(idx, "quantity", Number(e.target.value))} min={0} step="0.01" />
                   </div>
                   <div className="col-span-2">
-                    <Input
-                      type="number"
-                      value={item.unitPrice}
-                      onChange={e =>
-                        updateLineItem(idx, "unitPrice", Number(e.target.value))
-                      }
-                      min={0}
-                      step="0.01"
-                    />
+                    <Label htmlFor={`line-price-${idx}`} className="sr-only">Unit price for line item {idx + 1}</Label>
+                    <Input id={`line-price-${idx}`} aria-label={`Unit price for line item ${idx + 1}`} type="number" value={item.unitPrice} onChange={e => updateLineItem(idx, "unitPrice", Number(e.target.value))} min={0} step="0.01" />
                   </div>
-                  <div className="col-span-2 text-right font-mono text-sm font-medium">
+                  <div className="col-span-2 text-right font-mono text-sm font-medium" aria-label={`Amount ${formatCurrency(item.quantity * item.unitPrice)}`}>
                     {formatCurrency(item.quantity * item.unitPrice)}
                   </div>
                   <div className="col-span-1 flex justify-end">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeLineItem(idx)}
-                      disabled={lineItems.length <= 1}
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
+                    <Button type="button" variant="ghost" size="icon" aria-label={`Remove line item ${idx + 1}`} onClick={() => removeLineItem(idx)} disabled={lineItems.length <= 1} className="h-8 w-8 text-muted-foreground hover:text-destructive">
+                      <Trash2 className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </div>
                 </div>
@@ -308,18 +232,15 @@ export default function CreateInvoicePage() {
         </Card>
 
         <div className="flex justify-end gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setLocation("/invoices")}
-          >
-            Cancel
-          </Button>
-          <Button type="submit" disabled={createInvoice.isPending}>
-            {createInvoice.isPending ? "Creating..." : "Create Invoice"}
+          <Button type="button" variant="outline" onClick={() => setLocation("/invoices")}>Cancel</Button>
+          <Button type="submit" disabled={createInvoice.isPending} aria-busy={createInvoice.isPending}>
+            {createInvoice.isPending ? "Creating…" : "Create Invoice"}
           </Button>
         </div>
       </form>
+      <div role="status" aria-live="polite" className="sr-only">
+        {createInvoice.isPending ? "Creating invoice" : ""}
+      </div>
     </div>
   );
 }
