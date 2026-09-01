@@ -18,7 +18,6 @@ import {
   BarChart3,
   Users,
   ShieldCheck,
-  Star,
   Check,
   Zap,
   Globe,
@@ -31,19 +30,8 @@ import { Link } from "wouter";
 import { motion, useReducedMotion } from "motion/react";
 import { ProductShowcase } from "@/marketing/ProductShowcase";
 import { Badge, GridOverlay } from "@/brand/primitives";
-import { CountUp, Reveal, Stagger, StaggerItem } from "@/marketing/motion";
+import { Reveal, Stagger, StaggerItem } from "@/marketing/motion";
 import BorderGlow from "@/marketing/BorderGlow";
-
-const logos = [
-  "Northwind",
-  "Atlas",
-  "Meridian",
-  "Cobalt",
-  "Bright & Co.",
-  "Helios",
-  "Vantage",
-  "Lumen",
-];
 
 const features = [
   {
@@ -54,71 +42,27 @@ const features = [
   {
     icon: Send,
     title: "Send in one click",
-    body: "Email invoices with a hosted payment link, or share a URL. Clients see a clean, trustworthy page on any device.",
+    body: "Send invoices by email with a branded message and PDF attachment, or share the generated document with your client.",
   },
   {
     icon: CreditCard,
-    title: "Get paid faster",
-    body: "Accept card and bank payments, schedule automatic reminders, and watch overdue accounts shrink to near zero.",
+    title: "Track invoice status",
+    body: "Keep drafts, sent, paid and overdue invoices organized in one place, with clear totals and due dates.",
   },
   {
     icon: BarChart3,
     title: "Revenue you can see",
-    body: "A live dashboard tracks revenue, outstanding balances, and overdue counts so you always know where you stand.",
+    body: "A live dashboard tracks invoice totals, outstanding balances, invoice counts, and overdue accounts.",
   },
   {
     icon: Users,
     title: "Clients, organized",
-    body: "Every client, contact, and payment term in one place — with a full invoice history and a tidy audit trail.",
+    body: "Every client, contact, payment term, and invoice history in one place — with a tidy audit trail.",
   },
   {
     icon: ShieldCheck,
     title: "Secure by default",
-    body: "Role-based access, OAuth sign-in, and encrypted storage. Your financial data is locked down from day one.",
-  },
-];
-
-const stats = [
-  {
-    n: 2.4,
-    fmt: (v: number) => `£${v.toFixed(1)}B+`,
-    label: "Invoiced through HermiteFlow",
-  },
-  {
-    n: 11,
-    fmt: (v: number) => `${Math.round(v)} days`,
-    label: "Faster average payment",
-  },
-  {
-    n: 99.99,
-    fmt: (v: number) => `${v.toFixed(2)}%`,
-    label: "Uptime, every quarter",
-  },
-  {
-    n: 12000,
-    fmt: (v: number) => `${Math.round(v).toLocaleString("en-GB")}+`,
-    label: "Teams getting paid",
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      "We replaced three tools and a spreadsheet with HermiteFlow. Our DSO dropped by two weeks in the first month.",
-    name: "Sofia Marchetti",
-    role: "Finance Lead, Atlas Logistics",
-  },
-  {
-    quote:
-      "The dashboard is the first thing I open every morning. It feels like Linear, but for getting paid.",
-    name: "Daniel Okoro",
-    role: "Founder, Cobalt Design",
-  },
-  {
-    quote:
-      "Automatic reminders alone paid for the plan ten times over. Overdue invoices basically vanished.",
-    name: "Priya Nair",
-    role: "Ops Director, Meridian Health",
+    body: "Authentication, role-based access, validated inputs, and protected server-side operations keep the application locked down.",
   },
 ];
 
@@ -143,8 +87,6 @@ export default function Landing() {
         <GridOverlay />
         <Container className="relative pb-[clamp(48px,7vw,90px)] pt-[clamp(64px,11vw,150px)]">
           <motion.div className="flex flex-col items-start" {...rise(0)}>
-            {/* Status pill — status only, never an action. The dot carries the
-                one permitted glow in the system. */}
             <Badge live className="mb-6">
               v1 API — live
             </Badge>
@@ -155,59 +97,34 @@ export default function Landing() {
               </em>
             </h1>
             <p className="mt-5 max-w-[62ch] text-[14px] leading-[1.5] text-[var(--mkt-ink-subtle)]">
-              HermiteFlow turns bookings into paid invoices for photographers,
-              filmmakers, designers and studios. Connect your booking site and
-              every enquiry becomes a client, a branded invoice, and an email —
-              on its own. By Gaffy Studios.
+              HermiteFlow is a CRM and invoicing platform for photographers,
+              filmmakers, designers and studios. Manage clients, create branded
+              invoices, generate PDFs, and send invoices from one workspace.
+              By Gaffy Studios.
             </p>
             <div className="mt-[26px] flex flex-wrap gap-[10px]">
-              {/* The single accent CTA. One per page — this is the ~5%. */}
               <MButton size="lg" href={getLoginUrl()}>
-                Start for free
+                Open HermiteFlow
                 <ArrowRight className="h-4 w-4" />
               </MButton>
-              <MButton variant="secondary" size="lg" href="/pricing">
+              <MButton variant="secondary" size="lg" href="/docs">
                 Read the docs
               </MButton>
             </div>
             <div className="mt-5 flex items-center gap-2 text-[12.5px] text-[var(--mkt-ink-tertiary)]">
               <Check className="h-3.5 w-3.5" />
-              No credit card required
+              Built as an independent project
               <span className="mx-1 h-1 w-1 rounded-full bg-[var(--mkt-hairline-strong)]" />
-              Free 14-day Pro trial
+              Public API available
             </div>
           </motion.div>
 
-          {/* The product screenshot — the protagonist of the hero. */}
           <motion.div
             className="relative mx-auto mt-16 max-w-[1080px]"
             {...rise(0.15)}
           >
-            {/* No glow behind the mock: depth is hairlines and a background
-                step, never a blur. */}
             <ProductDashboardMock />
           </motion.div>
-        </Container>
-      </section>
-
-      {/* ===== Logo marquee ===== */}
-      <section className="border-y border-[var(--mkt-hairline-soft)] py-12">
-        <Container>
-          <p className="text-center text-[13px] text-[var(--mkt-ink-tertiary)]">
-            Trusted by finance and operations teams at fast-moving companies
-          </p>
-          <div className="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
-            <div className="mkt-marquee-track flex w-max items-center gap-14">
-              {[...logos, ...logos].map((name, i) => (
-                <span
-                  key={i}
-                  className="whitespace-nowrap text-[18px] font-semibold tracking-tight text-[var(--mkt-mock-ink-3)]"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
         </Container>
       </section>
 
@@ -220,7 +137,7 @@ export default function Landing() {
           <SectionHeading
             eyebrow="Everything you need"
             title="A complete billing workflow, end to end"
-            description="From the first draft to the final payment, HermiteFlow handles the entire lifecycle so you can stop chasing and start collecting."
+            description="From the first draft to the final email, HermiteFlow keeps clients, invoices, documents and statuses together."
           />
           <Stagger className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(f => (
@@ -298,12 +215,12 @@ export default function Landing() {
             <div className="order-1 lg:order-2">
               <Eyebrow>Automate</Eyebrow>
               <h2 className="mkt-display mt-4 text-[clamp(28px,4vw,42px)] text-[var(--mkt-ink)]">
-                Reminders that chase payments so you don't have to
+                Scheduled reminders for invoices
               </h2>
               <p className="mt-5 text-[17px] leading-relaxed text-[var(--mkt-ink-subtle)]">
-                Set a schedule once and HermiteFlow handles the rest — gentle
-                nudges before the due date, firm reminders after, and an instant
-                status flip the moment a payment lands.
+                Configure reminder schedules and keep invoice follow-ups
+                consistent without maintaining a separate spreadsheet or task
+                list.
               </p>
               <div className="mt-8 grid grid-cols-2 gap-4">
                 <div className="mkt-panel rounded-lg p-4">
@@ -318,71 +235,15 @@ export default function Landing() {
                 <div className="mkt-panel rounded-lg p-4">
                   <Globe className="h-5 w-5 text-[var(--mkt-primary-hover)]" />
                   <div className="mt-3 text-[15px] font-medium text-[var(--mkt-ink)]">
-                    Hosted pay pages
+                    Email delivery
                   </div>
                   <div className="mt-1 text-[13px] text-[var(--mkt-ink-subtle)]">
-                    Clients pay in two taps, anywhere.
+                    Send invoice emails with branded templates.
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </Container>
-      </section>
-
-      {/* ===== Stats band ===== */}
-      <section className="border-y border-[var(--mkt-hairline-soft)] py-16">
-        <Container>
-          <Stagger className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {stats.map(s => (
-              <StaggerItem key={s.label} className="text-center">
-                <CountUp
-                  to={s.n}
-                  format={s.fmt}
-                  className="mkt-display block text-[clamp(32px,5vw,48px)] text-[var(--mkt-ink)]"
-                />
-                <div className="mt-2 text-[14px] text-[var(--mkt-ink-subtle)]">{s.label}</div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </Container>
-      </section>
-
-      {/* ===== Testimonials ===== */}
-      <section className="py-24">
-        <Container>
-          <SectionHeading
-            eyebrow="Loved by teams"
-            title="Teams that switched never look back"
-          />
-          <Stagger className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
-            {testimonials.map(t => (
-              <StaggerItem
-                key={t.name}
-                className="mkt-panel flex flex-col rounded-xl p-7"
-              >
-                <div className="flex gap-0.5 text-[var(--mkt-primary-hover)]">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-current" />
-                  ))}
-                </div>
-                <blockquote className="mt-4 flex-1 text-[16px] leading-relaxed text-[var(--mkt-ink-muted)]">
-                  "{t.quote}"
-                </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[var(--mkt-primary)] to-[var(--mkt-primary-hover)] text-[13px] font-semibold text-white">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="text-[14px] font-medium text-[var(--mkt-ink)]">
-                      {t.name}
-                    </div>
-                    <div className="text-[12px] text-[var(--mkt-ink-tertiary)]">{t.role}</div>
-                  </div>
-                </figcaption>
-              </StaggerItem>
-            ))}
-          </Stagger>
         </Container>
       </section>
 
@@ -412,19 +273,19 @@ export default function Landing() {
             />
             <div className="relative">
               <h2 className="mkt-display mx-auto max-w-[18ch] text-[clamp(28px,4.5vw,46px)] text-[var(--mkt-ink)]">
-                Start getting paid faster today
+                Explore the project
               </h2>
               <p className="mx-auto mt-4 max-w-[52ch] text-[17px] text-[var(--mkt-ink-subtle)]">
-                Join thousands of teams running their billing on HermiteFlow.
-                Free to start — no credit card, no setup calls.
+                See the current product, documentation and public API. Features
+                that are not implemented are kept out of the main experience.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <MButton size="lg" href={getLoginUrl()}>
-                  Start for free
+                  Open HermiteFlow
                   <ArrowRight className="h-4 w-4" />
                 </MButton>
-                <MButton variant="secondary" size="lg" href="/contact">
-                  Talk to sales
+                <MButton variant="secondary" size="lg" href="/docs">
+                  View documentation
                 </MButton>
               </div>
               <p className="mt-6 text-[13px] text-[var(--mkt-ink-tertiary)]">
@@ -445,8 +306,6 @@ export default function Landing() {
 }
 
 // ── Hermite Labs ecosystem ──────────────────────────────────────────────────
-// A Composio-styled dark band (electric-blue voltage) that showcases the wider
-// Hermite Labs suite. Deliberately dark in both site themes — a spotlight band.
 
 const LABS = {
   canvas: "#0f0f0f",
@@ -466,47 +325,47 @@ const HERMITE_PRODUCTS = [
     name: "HermiteFlow",
     category: "CRM + Invoicing",
     domain: "flow.hermitelabs.com",
-    blurb: "Bookings to paid invoices, on autopilot. The one you're looking at.",
+    blurb: "CRM and invoicing for creative businesses.",
     live: true,
   },
   {
     icon: Bot,
     name: "Hermite AI",
     category: "AI tools",
-    domain: "ai.hermitelabs.com",
-    blurb: "Copywriting, replies and agents that plug into your workflow.",
+    domain: "",
+    blurb: "Planned AI tooling for the wider Hermite suite.",
     live: false,
   },
   {
     icon: KeyRound,
     name: "Hermite Auth",
     category: "Authentication",
-    domain: "auth.hermitelabs.com",
-    blurb: "One sign-in across every Hermite Labs product. SSO-ready.",
+    domain: "",
+    blurb: "Planned shared authentication across Hermite products.",
     live: false,
   },
   {
     icon: Cloud,
     name: "Hermite Cloud",
     category: "Cloud services",
-    domain: "cloud.hermitelabs.com",
-    blurb: "Storage, delivery and hosting for your files and galleries.",
+    domain: "",
+    blurb: "Planned storage and hosting services for creative workflows.",
     live: false,
   },
   {
     icon: Wallet,
     name: "Hermite Finance",
     category: "Smart budgeting",
-    domain: "finance.hermitelabs.com",
-    blurb: "AI budgeting and money tips built for a creative income.",
+    domain: "",
+    blurb: "Planned budgeting and cashflow tooling for creative businesses.",
     live: false,
   },
   {
     icon: BarChart3,
     name: "Hermite Analytics",
     category: "Business intelligence",
-    domain: "analytics.hermitelabs.com",
-    blurb: "Product and revenue analytics — a PostHog for your studio.",
+    domain: "",
+    blurb: "Planned product and revenue analytics for studios.",
     live: false,
   },
 ];
@@ -519,7 +378,6 @@ function HermiteLabsSection() {
           className="relative overflow-hidden rounded-[28px] border px-6 py-14 sm:px-12"
           style={{ borderColor: LABS.hairline, background: LABS.canvas }}
         >
-          {/* central electric-blue spotlight — the Composio signature */}
           <div
             className="pointer-events-none absolute -top-28 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full opacity-40 blur-[120px]"
             style={{ background: LABS.glow }}
@@ -541,8 +399,8 @@ function HermiteLabsSection() {
               className="mx-auto mt-4 max-w-[56ch] text-[16px] leading-relaxed"
               style={{ color: LABS.body }}
             >
-              HermiteFlow is the first of a growing suite by Gaffy Studios.
-              One account, one design language, everything that runs a studio.
+              HermiteFlow is the current product. Other Hermite Labs concepts
+              remain clearly labelled as planned work until they are ready.
             </p>
           </div>
 
@@ -573,7 +431,7 @@ function HermiteLabsSection() {
                       color: p.live ? LABS.success : LABS.body,
                     }}
                   >
-                    {p.live ? "Live" : "Coming soon"}
+                    {p.live ? "Live" : "Planned"}
                   </span>
                 </div>
                 <h3 className="mt-4 text-[17px] font-semibold" style={{ color: LABS.ink }}>
@@ -588,12 +446,11 @@ function HermiteLabsSection() {
                 <p className="mt-2 flex-1 text-[14px] leading-relaxed" style={{ color: LABS.body }}>
                   {p.blurb}
                 </p>
-                <p
-                  className="mt-4 font-mono text-[12px]"
-                  style={{ color: p.live ? LABS.cyan : "#666" }}
-                >
-                  {p.domain}
-                </p>
+                {p.domain && (
+                  <p className="mt-4 font-mono text-[12px]" style={{ color: LABS.cyan }}>
+                    {p.domain}
+                  </p>
+                )}
               </div>
             ))}
           </div>
