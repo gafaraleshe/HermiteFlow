@@ -21,10 +21,6 @@ import {
   Check,
   Zap,
   Globe,
-  Cloud,
-  Wallet,
-  Bot,
-  KeyRound,
 } from "lucide-react";
 import { Link } from "wouter";
 import { motion, useReducedMotion } from "motion/react";
@@ -247,9 +243,6 @@ export default function Landing() {
         </Container>
       </section>
 
-      {/* ===== Hermite Labs ecosystem ===== */}
-      <HermiteLabsSection />
-
       {/* ===== CTA banner ===== */}
       <section className="pb-28">
         <Container>
@@ -302,160 +295,5 @@ export default function Landing() {
         </Container>
       </section>
     </>
-  );
-}
-
-// ── Hermite Labs ecosystem ──────────────────────────────────────────────────
-
-const LABS = {
-  canvas: "#0f0f0f",
-  card: "#181818",
-  hairline: "#2a2a2a",
-  primary: "#0007cd",
-  glow: "#1a26ff",
-  ink: "#ffffff",
-  body: "#a8a8a8",
-  cyan: "#00d4ff",
-  success: "#33d17a",
-};
-
-const HERMITE_PRODUCTS = [
-  {
-    icon: FileText,
-    name: "HermiteFlow",
-    category: "CRM + Invoicing",
-    domain: "flow.hermitelabs.com",
-    blurb: "CRM and invoicing for creative businesses.",
-    live: true,
-  },
-  {
-    icon: Bot,
-    name: "Hermite AI",
-    category: "AI tools",
-    domain: "",
-    blurb: "Planned AI tooling for the wider Hermite suite.",
-    live: false,
-  },
-  {
-    icon: KeyRound,
-    name: "Hermite Auth",
-    category: "Authentication",
-    domain: "",
-    blurb: "Planned shared authentication across Hermite products.",
-    live: false,
-  },
-  {
-    icon: Cloud,
-    name: "Hermite Cloud",
-    category: "Cloud services",
-    domain: "",
-    blurb: "Planned storage and hosting services for creative workflows.",
-    live: false,
-  },
-  {
-    icon: Wallet,
-    name: "Hermite Finance",
-    category: "Smart budgeting",
-    domain: "",
-    blurb: "Planned budgeting and cashflow tooling for creative businesses.",
-    live: false,
-  },
-  {
-    icon: BarChart3,
-    name: "Hermite Analytics",
-    category: "Business intelligence",
-    domain: "",
-    blurb: "Planned product and revenue analytics for studios.",
-    live: false,
-  },
-];
-
-function HermiteLabsSection() {
-  return (
-    <section className="pb-24">
-      <Container>
-        <div
-          className="relative overflow-hidden rounded-[28px] border px-6 py-14 sm:px-12"
-          style={{ borderColor: LABS.hairline, background: LABS.canvas }}
-        >
-          <div
-            className="pointer-events-none absolute -top-28 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full opacity-40 blur-[120px]"
-            style={{ background: LABS.glow }}
-          />
-          <div className="relative text-center">
-            <span
-              className="inline-block rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]"
-              style={{ borderColor: LABS.hairline, color: LABS.cyan }}
-            >
-              Hermite Labs
-            </span>
-            <h2
-              className="mkt-display mx-auto mt-5 max-w-[20ch] text-[clamp(28px,4.5vw,46px)]"
-              style={{ color: LABS.ink }}
-            >
-              One platform for your whole creative business
-            </h2>
-            <p
-              className="mx-auto mt-4 max-w-[56ch] text-[16px] leading-relaxed"
-              style={{ color: LABS.body }}
-            >
-              HermiteFlow is the current product. Other Hermite Labs concepts
-              remain clearly labelled as planned work until they are ready.
-            </p>
-          </div>
-
-          <div className="relative mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {HERMITE_PRODUCTS.map(p => (
-              <div
-                key={p.name}
-                className="flex flex-col rounded-2xl border p-6 transition-colors"
-                style={{
-                  borderColor: p.live ? "rgba(0,7,205,0.5)" : LABS.hairline,
-                  background: LABS.card,
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <span
-                    className="flex h-10 w-10 items-center justify-center rounded-xl"
-                    style={{
-                      background: p.live ? "rgba(0,7,205,0.18)" : "#222",
-                      color: p.live ? LABS.cyan : LABS.body,
-                    }}
-                  >
-                    <p.icon className="h-5 w-5" />
-                  </span>
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest"
-                    style={{
-                      borderColor: LABS.hairline,
-                      color: p.live ? LABS.success : LABS.body,
-                    }}
-                  >
-                    {p.live ? "Live" : "Planned"}
-                  </span>
-                </div>
-                <h3 className="mt-4 text-[17px] font-semibold" style={{ color: LABS.ink }}>
-                  {p.name}
-                </h3>
-                <p
-                  className="text-[12px] font-medium uppercase tracking-wider"
-                  style={{ color: LABS.cyan }}
-                >
-                  {p.category}
-                </p>
-                <p className="mt-2 flex-1 text-[14px] leading-relaxed" style={{ color: LABS.body }}>
-                  {p.blurb}
-                </p>
-                {p.domain && (
-                  <p className="mt-4 font-mono text-[12px]" style={{ color: LABS.cyan }}>
-                    {p.domain}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </Container>
-    </section>
   );
 }
